@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
       title: 'My App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        
       ),
       home: LoginScreen(),
     );

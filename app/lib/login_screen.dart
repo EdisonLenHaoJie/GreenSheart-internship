@@ -35,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         title: Text('Login'),
       ),
+      backgroundColor: Colors.blue,
       body: Center(
         child: _isLoading
             ? CircularProgressIndicator() // Feedback to the user
