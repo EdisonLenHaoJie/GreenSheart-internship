@@ -3,7 +3,7 @@ import 'medication.dart';
 class PrescriptionMedication extends Medication {
   // Additional properties
   String doctorName;
-  String prescriptionNumber;
+  String frequency;
 
   // Constructor
   PrescriptionMedication({
@@ -12,7 +12,7 @@ class PrescriptionMedication extends Medication {
     required DateTime time,
     required String dose,
     required this.doctorName,
-    required this.prescriptionNumber,
+    required this.frequency,
   }) : super(
           id: id,
           name: name,
@@ -25,6 +25,6 @@ class PrescriptionMedication extends Medication {
   void displayInfo() {
     super.displayInfo();
     print('Doctor Name: $doctorName');
-    print('Prescription Number: $prescriptionNumber');
+    print('Prescription Number: $frequency');
   }
 }

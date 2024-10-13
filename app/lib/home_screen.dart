@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
         time: DateTime.now(),
         dose: '500 mg',
         doctorName: 'Dr. Smith',
-        prescriptionNumber: 'RX123456',
+        frequency: 'once a day ',
       ),
     );
   }
@@ -64,7 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
           return ListTile(
             title: Text(med.name),
             subtitle: Text('Dose: ${med.dose}'),
-            trailing: Text('Time: ${med.time.hour}:${med.time.minute.toString().padLeft(2, '0')}'),
+            trailing: Text(
+                'Time: ${med.time.hour}:${med.time.minute.toString().padLeft(2, '0')}'),
             onTap: () {
               // Provide feedback to the user
               ScaffoldMessenger.of(context).showSnackBar(
@@ -84,19 +85,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _addNewMedication() {
-    // Logic to add a new medication (you can implement a form)
-    // For demonstration, we'll add a dummy medication
-    setState(() {
-      int newId = _medicationManager.getAllMedications().length + 1;
-      _medicationManager.addMedication(
-        Medication(
-          id: newId,
-          name: 'New Medication $newId',
-          time: DateTime.now(),
-          dose: '150 mg',
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          left: 16,
+          right: 16,
+          top: 16,
         ),
-      );
-    });
+        child: AddMedicationForm(
+          onAdd: (Medication medication) {
+            setState(() {
+              _medicationManager.addMedication(medication);
+            });
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
   }
 
   void _showMedicationDetails(Medication med) {
@@ -110,10 +118,11 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Dose: ${med.dose}'),
-              Text('Time: ${med.time.hour}:${med.time.minute.toString().padLeft(2, '0')}'),
+              Text(
+                  'Time: ${med.time.hour}:${med.time.minute.toString().padLeft(2, '0')}'),
               if (med is PrescriptionMedication) ...[
                 Text('Doctor: ${med.doctorName}'),
-                Text('Prescription #: ${med.prescriptionNumber}'),
+                Text('Frequency : ${med.frequency}'),
               ],
             ],
           ),
@@ -140,4 +149,139 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+} 
+
+
+class AddMedicationForm extends StatefulWidget {
+  final Function(Medication) onAdd;
+
+  AddMedicationForm({required this.onAdd});
+
+  @override
+  _AddMedicationFormState createState() => _AddMedicationFormState();
 }
+
+class _AddMedicationFormState extends State<AddMedicationForm> {
+  final _formKey = GlobalKey<FormState>();
+  String _name = '';
+  String _dose = '';
+  String _doctorName = '';
+  String _frequency = '';
+  bool _isPrescription = false;
+ 
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            Text(
+              'Add New Medication',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SwitchListTile(
+              title: Text('Is this a prescription medication?'),
+              value: _isPrescription,
+              onChanged: (value) {
+                setState(() {
+                  _isPrescription = value;
+                });
+              },
+            ),
+            TextFormField(
+              decoration: InputDecoration(labelText: 'Medication Name'),
+              validator: (value) {
+                if (value == null || value.isEmpty)
+                  return 'Please enter the medication name';
+                return null;
+              },
+              onSaved: (value) {
+                _name = value!;
+              },
+            ),
+            TextFormField(
+              decoration: InputDecoration(labelText: 'Dose'),
+              validator: (value) {
+                if (value == null || value.isEmpty)
+                  return 'Please enter the dose';
+                return null;
+              },
+              onSaved: (value) {
+                _dose = value!;
+              },
+            ),
+            if (_isPrescription) ...[
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Doctor Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty)
+                    return 'Please enter the doctor\'s name';
+                  return null;
+                },
+                onSaved: (value) {
+                  _doctorName = value!;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Frequency'),
+                validator: (value) {
+                  if (value == null || value.isEmpty)
+                    return 'Please enter the frequency (e.g., once a day)';
+                  return null;
+                },
+                onSaved: (value) {
+                  _frequency = value!;
+                },
+              ),
+            ],
+            
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _submitForm,
+              style: ElevatedButton.styleFrom(
+                 backgroundColor: const Color.fromARGB(255, 136, 194, 235)
+                            ),
+              child: Text('Add Medication'),
+            ),
+            SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      
+      _formKey.currentState!.save();
+
+      int newId = DateTime.now().millisecondsSinceEpoch;
+
+      Medication newMedication;
+      if (_isPrescription) {
+        newMedication = PrescriptionMedication(
+          id: newId,
+          name: _name,
+          dose: _dose,
+          time: DateTime.now(),
+          doctorName: _doctorName,
+          frequency: _frequency,
+        );
+      } else {
+        newMedication = Medication(
+          id: newId,
+          name: _name,
+          dose: _dose,
+          time: DateTime.now(),
+        );
+      }
+
+      widget.onAdd(newMedication);
+    }
+  }
+}
+
