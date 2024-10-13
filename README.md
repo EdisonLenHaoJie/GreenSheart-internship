@@ -1,36 +1,77 @@
-# Design Choices
-1. Object-Oriented Programming (OOP)
-Medication Class Hierarchy: A base Medication class represents general medications, with a subclass PrescriptionMedication for medications that require a prescription. This demonstrates inheritance and polymorphism, allowing for code reuse and scalability.
+<h1>Design Choices</h1>
 
-MedicationManager: Implemented a MedicationManager class to handle all medication-related operations such as adding, removing, and updating medications. This encapsulates the medication logic and maintains a clean separation of concerns.
+<h2>1. Object-Oriented Programming (OOP)</h2>
 
-2. State Management
-Stateful Widgets: Used StatefulWidget for screens that require dynamic updates, like the login screen and home screen.
+<ul>
+  <li>
+    <strong>Medication Class Hierarchy</strong>: A base <code>Medication</code> class represents general medications, with a subclass <code>PrescriptionMedication</code> for medications that require a prescription. This demonstrates <strong>inheritance</strong> and <strong>polymorphism</strong>, allowing for code reuse and scalability.
+  </li>
+  <li>
+    <strong>MedicationManager</strong>: Implemented a <code>MedicationManager</code> class to handle all medication-related operations such as adding, removing, and updating medications. This encapsulates the medication logic and maintains a <strong>clean separation of concerns</strong>.
+  </li>
+</ul>
 
-SetState: Managed state using setState for simplicity and to reflect changes in the UI immediately.
+<h2>2. State Management</h2>
 
-3. User Interface
-Consistent Design: Maintained a consistent color scheme and styling across all screens to enhance user experience.
+<ul>
+  <li>
+    <strong>Stateful Widgets</strong>: Used <code>StatefulWidget</code> for screens that require dynamic updates, like the login screen and home screen.
+  </li>
+  <li>
+    <strong>setState</strong>: Managed state using <code>setState</code> for simplicity and to reflect changes in the UI immediately.
+  </li>
+</ul>
 
-Responsive UI: Built the UI using Flutter widgets that adapt to different screen sizes, ensuring the app looks good on various devices.
+<h2>3. User Interface</h2>
 
-Background Images: Used Stack to layer widgets and display background images without interfering with the interactive elements.
+<ul>
+  <li>
+    <strong>Consistent Design</strong>: Maintained a consistent color scheme and styling across all screens to enhance user experience.
+  </li>
+  <li>
+    <strong>Responsive UI</strong>: Built the UI using Flutter widgets that adapt to different screen sizes, ensuring the app looks good on various devices.
+  </li>
+  <li>
+    <strong>Background Images</strong>: Used <code>Stack</code> to layer widgets and display background images without interfering with the interactive elements.
+  </li>
+</ul>
 
-4. Form Validation
-Login Screen Validation: Implemented validation to ensure users enter a valid email and a password that is at least six characters long. This prevents invalid data from being processed.
+<h2>4. Form Validation</h2>
 
-Add Medication Form Validation: Ensured all required fields are filled out before allowing the user to add a new medication. Provided clear error messages to guide the user.
+<ul>
+  <li>
+    <strong>Login Screen Validation</strong>: Implemented validation to ensure users enter a valid email and a password that is at least six characters long. This prevents invalid data from being processed.
+  </li>
+  <li>
+    <strong>Add Medication Form Validation</strong>: Ensured all required fields are filled out before allowing the user to add a new medication. Provided clear error messages to guide the user.
+  </li>
+</ul>
 
-5. Code Organization
-File Structure: Organized code into separate files for each screen (login_screen.dart, home_screen.dart) and model classes (medication.dart, prescription_medication.dart, medication_manager.dart). This improves maintainability and readability.
+<h2>5. Code Organization</h2>
 
-Best Practices: Followed Dart and Flutter best practices, including proper naming conventions, use of const and final, and widget composition.
+<ul>
+  <li>
+    <strong>File Structure</strong>: Organized code into separate files for each screen (<code>login_screen.dart</code>, <code>home_screen.dart</code>) and model classes (<code>medication.dart</code>, <code>prescription_medication.dart</code>, <code>medication_manager.dart</code>). This improves maintainability and readability.
+  </li>
+  <li>
+    <strong>Best Practices</strong>: Followed Dart and Flutter best practices, including proper naming conventions, use of <code>const</code> and <code>final</code>, and widget composition.
+  </li>
+</ul>
 
-# Assumptions
-No Persistent Storage: The app does not implement long-term data persistence. All medication data is stored in memory and will be lost when the app is closed. This aligns with the project requirements that specify long-term persistence is not required.
+<h1>Assumptions</h1>
 
-User Authentication: The login functionality does not include actual authentication against a user database. It assumes that any input that passes validation is acceptable for logging in.
+<ul>
+  <li>
+    <strong>No Persistent Storage</strong>: The app does not implement long-term data persistence. All medication data is stored in memory and will be lost when the app is closed. This aligns with the project requirements that specify long-term persistence is not required.
+  </li>
+  <li>
+    <strong>User Authentication</strong>: The login functionality does not include actual authentication against a user database. It assumes that any input that passes validation is acceptable for logging in.
+  </li>
+  <li>
+    <strong>Time Handling</strong>: Medications are assigned the current time when added. Time selection for medications is not implemented but could be added in future iterations.
+  </li>
+  <li>
+    <strong>Error Handling</strong>: Assumes that all operations succeed and does not include extensive error handling for unexpected exceptions, given the project's scope.
+  </li>
+</ul>
 
-Time Handling: Medications are assigned the current time when added. Time selection for medications is not implemented but could be added in future iterations.
-
-Error Handling: Assumes that all operations succeed and does not include extensive error handling for unexpected exceptions, given the project's scope.
