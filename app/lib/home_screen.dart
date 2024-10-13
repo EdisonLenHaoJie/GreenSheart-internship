@@ -92,6 +92,7 @@ Widget build(BuildContext context) {
     ),
     floatingActionButton: FloatingActionButton(
       onPressed: _addNewMedication,
+      backgroundColor: const Color.fromARGB(255, 136, 194, 235),
       child: Icon(Icons.add),
     ),
   );
