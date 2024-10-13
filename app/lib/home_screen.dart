@@ -4,6 +4,8 @@ import 'models/medication.dart';
 import 'models/prescription_medication.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key}); // Added const constructor and super.key
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -50,54 +52,53 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-Widget build(BuildContext context) {
-  List<Medication> medications = _medicationManager.getAllMedications();
+  Widget build(BuildContext context) {
+    List<Medication> medications = _medicationManager.getAllMedications();
 
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Medications'),
-      backgroundColor: const Color.fromARGB(255, 115, 186, 245),
-    ),
-    body: Stack(
-      fit: StackFit.expand,
-      children: [
-        Image.asset(
-          'assets/Design3.png',
-          fit: BoxFit.cover,
-        ),
-        Positioned.fill(
-          child: ListView.builder(
-            itemCount: medications.length,
-            itemBuilder: (context, index) {
-              Medication med = medications[index];
-              return ListTile(
-                title: Text(med.name),
-                subtitle: Text('Dose: ${med.dose}'),
-                trailing: Text(
-                  'Time: ${med.time.hour}:${med.time.minute.toString().padLeft(2, '0')}',
-                ),
-                onTap: () {
-                  // Provide feedback to the user
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Selected: ${med.name}')),
-                  );
-                  // Display medication details
-                  _showMedicationDetails(med);
-                },
-              );
-            },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Medications'), // Added const
+        backgroundColor: const Color.fromARGB(255, 115, 186, 245),
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/Design3.png',
+            fit: BoxFit.cover,
           ),
-        ),
-      ],
-    ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: _addNewMedication,
-      backgroundColor: const Color.fromARGB(255, 136, 194, 235),
-      child: Icon(Icons.add),
-    ),
-  );
-}
-
+          Positioned.fill(
+            child: ListView.builder(
+              itemCount: medications.length,
+              itemBuilder: (context, index) {
+                Medication med = medications[index];
+                return ListTile(
+                  title: Text(med.name),
+                  subtitle: Text('Dose: ${med.dose}'),
+                  trailing: Text(
+                    'Time: ${med.time.hour}:${med.time.minute.toString().padLeft(2, '0')}',
+                  ),
+                  onTap: () {
+                    // Provide feedback to the user
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Selected: ${med.name}')),
+                    );
+                    // Display medication details
+                    _showMedicationDetails(med);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addNewMedication,
+        backgroundColor: const Color.fromARGB(255, 136, 194, 235),
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
 
   void _addNewMedication() {
     showModalBottomSheet(
@@ -134,10 +135,11 @@ Widget build(BuildContext context) {
             children: [
               Text('Dose: ${med.dose}'),
               Text(
-                  'Time: ${med.time.hour}:${med.time.minute.toString().padLeft(2, '0')}'),
+                'Time: ${med.time.hour}:${med.time.minute.toString().padLeft(2, '0')}',
+              ),
               if (med is PrescriptionMedication) ...[
                 Text('Doctor: ${med.doctorName}'),
-                Text('Frequency : ${med.frequency}'),
+                Text('Frequency: ${med.frequency}'),
               ],
             ],
           ),
@@ -150,27 +152,26 @@ Widget build(BuildContext context) {
                 });
                 Navigator.pop(context);
               },
-              child: Text('Remove'),
+              child: const Text('Remove'),
             ),
             TextButton(
               onPressed: () {
                 // Close dialog
                 Navigator.pop(context);
               },
-              child: Text('Close'),
+              child: const Text('Close'),
             ),
           ],
         );
       },
     );
   }
-} 
-
+}
 
 class AddMedicationForm extends StatefulWidget {
   final Function(Medication) onAdd;
 
-  AddMedicationForm({required this.onAdd});
+  const AddMedicationForm({required this.onAdd, super.key});
 
   @override
   _AddMedicationFormState createState() => _AddMedicationFormState();
@@ -183,7 +184,6 @@ class _AddMedicationFormState extends State<AddMedicationForm> {
   String _doctorName = '';
   String _frequency = '';
   bool _isPrescription = false;
- 
 
   @override
   Widget build(BuildContext context) {
@@ -192,12 +192,12 @@ class _AddMedicationFormState extends State<AddMedicationForm> {
         key: _formKey,
         child: Column(
           children: [
-            Text(
+            const Text(
               'Add New Medication',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SwitchListTile(
-              title: Text('Is this a prescription medication?'),
+              title: const Text('Is this a prescription medication?'),
               value: _isPrescription,
               onChanged: (value) {
                 setState(() {
@@ -206,10 +206,11 @@ class _AddMedicationFormState extends State<AddMedicationForm> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Medication Name'),
+              decoration: const InputDecoration(labelText: 'Medication Name'),
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return 'Please enter the medication name';
+                }
                 return null;
               },
               onSaved: (value) {
@@ -217,10 +218,11 @@ class _AddMedicationFormState extends State<AddMedicationForm> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Dose'),
+              decoration: const InputDecoration(labelText: 'Dose'),
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return 'Please enter the dose';
+                }
                 return null;
               },
               onSaved: (value) {
@@ -229,10 +231,11 @@ class _AddMedicationFormState extends State<AddMedicationForm> {
             ),
             if (_isPrescription) ...[
               TextFormField(
-                decoration: InputDecoration(labelText: 'Doctor Name'),
+                decoration: const InputDecoration(labelText: 'Doctor Name'),
                 validator: (value) {
-                  if (value == null || value.isEmpty)
+                  if (value == null || value.isEmpty) {
                     return 'Please enter the doctor\'s name';
+                  }
                   return null;
                 },
                 onSaved: (value) {
@@ -240,10 +243,12 @@ class _AddMedicationFormState extends State<AddMedicationForm> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Frequency'),
+                decoration:
+                    const InputDecoration(labelText: 'Frequency (e.g., once a day)'),
                 validator: (value) {
-                  if (value == null || value.isEmpty)
-                    return 'Please enter the frequency (e.g., once a day)';
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the frequency';
+                  }
                   return null;
                 },
                 onSaved: (value) {
@@ -251,27 +256,23 @@ class _AddMedicationFormState extends State<AddMedicationForm> {
                 },
               ),
             ],
-            
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _submitForm,
               style: ElevatedButton.styleFrom(
-                 backgroundColor: const Color.fromARGB(255, 136, 194, 235)
-                            ),
-              child: Text('Add Medication'),
+                backgroundColor: const Color.fromARGB(255, 136, 194, 235),
+              ),
+              child: const Text('Add Medication'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  
-
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      
       _formKey.currentState!.save();
 
       int newId = DateTime.now().millisecondsSinceEpoch;
@@ -299,4 +300,3 @@ class _AddMedicationFormState extends State<AddMedicationForm> {
     }
   }
 }
-

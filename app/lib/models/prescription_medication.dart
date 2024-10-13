@@ -25,6 +25,6 @@ class PrescriptionMedication extends Medication {
   void displayInfo() {
     super.displayInfo();
     print('Doctor Name: $doctorName');
-    print('Prescription Number: $frequency');
+    print('Frequency: $frequency');
   }
 }

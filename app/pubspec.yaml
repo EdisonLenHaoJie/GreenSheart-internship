@@ -66,6 +66,7 @@ flutter:
       - "assets/Design 1.png"
       - "assets/Design2.png"
       - "assets/Design3.png"
+      - "assets/Loginpage.png"
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
