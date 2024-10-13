@@ -50,39 +50,53 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    List<Medication> medications = _medicationManager.getAllMedications();
+Widget build(BuildContext context) {
+  List<Medication> medications = _medicationManager.getAllMedications();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Medications'),
-      ),
-      body: ListView.builder(
-        itemCount: medications.length,
-        itemBuilder: (context, index) {
-          Medication med = medications[index];
-          return ListTile(
-            title: Text(med.name),
-            subtitle: Text('Dose: ${med.dose}'),
-            trailing: Text(
-                'Time: ${med.time.hour}:${med.time.minute.toString().padLeft(2, '0')}'),
-            onTap: () {
-              // Provide feedback to the user
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Selected: ${med.name}')),
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('Medications'),
+      backgroundColor: const Color.fromARGB(255, 115, 186, 245),
+    ),
+    body: Stack(
+      fit: StackFit.expand,
+      children: [
+        Image.asset(
+          'assets/Design3.png',
+          fit: BoxFit.cover,
+        ),
+        Positioned.fill(
+          child: ListView.builder(
+            itemCount: medications.length,
+            itemBuilder: (context, index) {
+              Medication med = medications[index];
+              return ListTile(
+                title: Text(med.name),
+                subtitle: Text('Dose: ${med.dose}'),
+                trailing: Text(
+                  'Time: ${med.time.hour}:${med.time.minute.toString().padLeft(2, '0')}',
+                ),
+                onTap: () {
+                  // Provide feedback to the user
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Selected: ${med.name}')),
+                  );
+                  // Display medication details
+                  _showMedicationDetails(med);
+                },
               );
-              // Display medication details
-              _showMedicationDetails(med);
             },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addNewMedication,
-        child: Icon(Icons.add),
-      ),
-    );
-  }
+          ),
+        ),
+      ],
+    ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: _addNewMedication,
+      child: Icon(Icons.add),
+    ),
+  );
+}
+
 
   void _addNewMedication() {
     showModalBottomSheet(
